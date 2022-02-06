@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchTransactionsByFilter, setCurrentFilter } from '../transactionsSlice';
+import { fetchTransactionsByFilter } from '../transactionsSlice';
 import { FILTERS, TRANSACTIONS_PER_PAGE } from '../../../constants/transactions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -8,10 +8,10 @@ import './FilterBlock.scss';
 
 function FilterBlock() {
   const dispatch = useDispatch();
-  const { currentFilter, page } = useSelector((state) => state.transactions);
+  const { page } = useSelector((state) => state.transactions);
 
   const [userInput, setUserInput] = useState('');
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState(FILTERS.blockNumber);
 
   const handleUserInputChange = (event) => {
     setUserInput(event.target.value);
@@ -22,15 +22,10 @@ function FilterBlock() {
   };
 
   const handleButtonClick = () => {
-    if (selected && currentFilter !== selected) {
-      dispatch(setCurrentFilter(selected));
-    }
     if (!userInput) {
       return;
     }
-    dispatch(
-      fetchTransactionsByFilter({ filter: selected, value: userInput, limit: TRANSACTIONS_PER_PAGE, page })
-    );
+    dispatch(fetchTransactionsByFilter({ filter: selected, value: userInput, limit: TRANSACTIONS_PER_PAGE, page }));
     setUserInput('');
   };
 
