@@ -1,0 +1,32 @@
+.logo {
+  font-style: normal;
+  color: #ffffff;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  background: #3a80ba;
+  height: 72px;
+  margin-bottom: 60px;
+
+  .logo {
+    font-size: 40px;
+  }
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  height: 57px;
+  justify-content: space-between;
+  background: #1c3b55;
+  color: #ffffff;
+  .logo {
+    font-size: 24px;
+  }
+
+  .content, copyright {
+    font-size: 16px;
+  }
+}
