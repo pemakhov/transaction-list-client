@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRecentTransactions } from './transactionsSlice';
 import FilterBlock from './FilterBlock/FilterBlock';
+import TransactionsTable from './TransactionsTable/TransactionsTable';
 
 function Transactions() {
   const dispatch = useDispatch();
@@ -11,12 +12,12 @@ function Transactions() {
 
   const transactions = useSelector((state) => state.transactions.transactions);
   return (
-    <div>
-      <FilterBlock />
-      {transactions.map((item) => (
-        <div key={item._id}>{item._id}</div>
-      ))}
-    </div>
+    <>
+      <div>
+        <FilterBlock />
+        <TransactionsTable data={transactions} />
+      </div>
+    </>
   );
 }
 

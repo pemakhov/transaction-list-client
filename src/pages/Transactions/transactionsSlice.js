@@ -8,7 +8,6 @@ export const fetchRecentTransactions = createAsyncThunk('transactions/fetchLast'
   try {
     const response = await axios.get(fetchRecentTransactionsURL);
     const transactions = response && response?.data;
-    console.log({transactions});
     return transactions || [];
   } catch (e) {
     console.error(e.message);

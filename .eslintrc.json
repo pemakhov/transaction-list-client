@@ -27,8 +27,9 @@
             "unix"
         ],
         "quotes": [
-            "error",
-            "single"
+            2,
+            "single",
+            "avoid-escape"
         ],
         "semi": [
             "error",

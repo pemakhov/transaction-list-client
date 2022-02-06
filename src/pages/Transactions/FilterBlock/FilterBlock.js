@@ -46,10 +46,10 @@ function FilterBlock() {
           placeholder="Search..."
         />
         <select className="filter" value={selected} onChange={handleSelectChange}>
-          <option value={FILTERS.from}>From</option>
-          <option value={FILTERS.to}>To</option>
           <option value={FILTERS.blockNumber}>Block Number</option>
-          <option value={FILTERS.id}>ID</option>
+          <option value={FILTERS.id}>Transaction ID</option>
+          <option value={FILTERS.from}>To Address</option>
+          <option value={FILTERS.to}>From Address</option>
         </select>
       </div>
       <button className="search-button" onClick={handleButtonClick}>
