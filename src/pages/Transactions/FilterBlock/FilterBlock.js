@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { FILTERS } from '../../../constants/transactions';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchTransactionsByFilter, setCurrentFilter } from '../transactionsSlice';
+import { FILTERS, TRANSACTIONS_PER_PAGE } from '../../../constants/transactions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import './FilterBlock.scss';
 
 function FilterBlock() {
+  const dispatch = useDispatch();
+  const { currentFilter, page } = useSelector((state) => state.transactions);
+
   const [userInput, setUserInput] = useState('');
   const [selected, setSelected] = useState('');
 
@@ -16,27 +21,38 @@ function FilterBlock() {
     setSelected(event.target.value);
   };
 
-  // const handleSubmit =
+  const handleButtonClick = () => {
+    if (selected && currentFilter !== selected) {
+      dispatch(setCurrentFilter(selected));
+    }
+    if (!userInput) {
+      return;
+    }
+    dispatch(
+      fetchTransactionsByFilter({ filter: selected, value: userInput, limit: TRANSACTIONS_PER_PAGE, page })
+    );
+    setUserInput('');
+  };
 
   return (
     <div className="filter-block">
       <div className="wrapper">
         <input
-          className='search'
+          className="search"
           type="text"
           name="userInput"
           value={userInput}
           onChange={handleUserInputChange}
           placeholder="Search..."
         />
-        <select className='filter' value={selected} onChange={handleSelectChange}>
+        <select className="filter" value={selected} onChange={handleSelectChange}>
           <option value={FILTERS.from}>From</option>
           <option value={FILTERS.to}>To</option>
           <option value={FILTERS.blockNumber}>Block Number</option>
           <option value={FILTERS.id}>ID</option>
         </select>
       </div>
-      <button className="search-button">
+      <button className="search-button" onClick={handleButtonClick}>
         <FontAwesomeIcon icon={faSearch} />
       </button>
     </div>

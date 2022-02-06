@@ -1,14 +1,30 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { IDLE, PENDING } from '../../constants/loadingStates';
-import { fetchRecentTransactionsURL } from '../../constants/urls';
-import { TRANSACTIONS_PER_PAGE } from '../../constants/transactions';
+import { fetchRecentTransactionsURL, filteredURLBase } from '../../constants/urls';
+import { FILTERS } from '../../constants/transactions';
 
 export const fetchRecentTransactions = createAsyncThunk('transactions/fetchLast', async () => {
   try {
-    const url = `${fetchRecentTransactionsURL}${TRANSACTIONS_PER_PAGE}`;
+    const response = await axios.get(fetchRecentTransactionsURL);
+    const transactions = response && response?.data;
+    console.log({transactions});
+    return transactions || [];
+  } catch (e) {
+    console.error(e.message);
+  }
+});
+
+const getFilteredTransactionsURL = (base, filter, value, limit, page) =>
+  `${base}?filter=${filter}&value=${value}&limit=${limit}&page=${page}`;
+
+export const fetchTransactionsByFilter = createAsyncThunk('transactions/fetchFiltered', async ({ filter, value, limit, page }) => {
+  try {
+    const url = getFilteredTransactionsURL(filteredURLBase, filter, value, limit, page);
+    console.log({ url });
     const response = await axios.get(url);
     const transactions = response && response?.data;
+    console.log({ transactions });
     return transactions || [];
   } catch (e) {
     console.error(e.message);
@@ -18,7 +34,7 @@ export const fetchRecentTransactions = createAsyncThunk('transactions/fetchLast'
 export const transactionsSlice = createSlice({
   name: 'transactions',
   initialState: {
-    currentFilter: '',
+    currentFilter: FILTERS.blockNumber,
     transactions: [],
     page: 0,
     pages: 1,
@@ -49,6 +65,10 @@ export const transactionsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchRecentTransactions.pending, (state) => ({ ...state, loading: PENDING }));
     builder.addCase(fetchRecentTransactions.fulfilled, (state, action) => {
+      return { ...state, loading: IDLE, transactions: action.payload || [] };
+    });
+    builder.addCase(fetchTransactionsByFilter.pending, (state) => ({ ...state, loading: PENDING }));
+    builder.addCase(fetchTransactionsByFilter.fulfilled, (state, action) => {
       return { ...state, loading: IDLE, transactions: action.payload || [] };
     });
   },
