@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { IDLE, PENDING } from '../../constants/loadingStates';
 import { fetchAllURL, fetchFilteredURL } from '../../constants/urls';
-import { FILTERS } from '../../constants/transactions';
+import { FILTERS, TRANSACTIONS_PER_PAGE } from '../../constants/transactions';
 
 const getAllTransactionsURL = (base, limit, page) => `${base}?limit=${limit}&page=${page}`;
 
@@ -16,10 +16,9 @@ export const fetchTransactions = createAsyncThunk('transactions/fetchTransaction
     const url = value
       ? getTransactionsURL(fetchFilteredURL, filter, value, limit, page)
       : getAllTransactionsURL(fetchAllURL, limit, page);
-    console.log({ url });
     const response = await axios.get(url);
     const data = response && response?.data;
-    return data || { transactions: [], pages: 0 };
+    return data || { transactions: [], items: 0 };
   } catch (e) {
     console.error(e.message);
   }
@@ -68,8 +67,8 @@ export const transactionsSlice = createSlice({
     builder.addCase(fetchTransactions.pending, (state) => ({ ...state, loading: PENDING }));
     builder.addCase(fetchTransactions.fulfilled, (state, action) => {
       try {
-        console.log('payload', action.payload);
-        const { transactions, pages } = action.payload;
+        const { transactions, items } = action.payload;
+        const pages = Math.ceil(Number(items) / TRANSACTIONS_PER_PAGE);
         return { ...state, loading: IDLE, transactions, pages };
       } catch (e) {
         console.error(e.message);

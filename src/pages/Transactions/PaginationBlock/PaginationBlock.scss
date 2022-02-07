@@ -1,11 +1,28 @@
+$mediumScreenWidth: 1024px;
+
 #pagination {
-  margin-bottom: 48px;
+  margin-bottom: 20px;
   width: 100%;
   display: flex;
   justify-content: center;
 
-
   .wrapper {
     display: flex;
+  }
+
+  .pagination-divider {
+    width: 30px;
+    height: 48px;
+    text-align: center;
+    vertical-align: bottom;
+    padding-top: 20px;
+    font-size: 16px;
+    color: #1a1a1a;
+  }
+}
+
+@media only screen and (min-width: $mediumScreenWidth) {
+  #pagination {
+    margin-bottom: 48px;
   }
 }

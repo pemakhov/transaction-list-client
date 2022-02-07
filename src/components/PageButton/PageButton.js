@@ -5,7 +5,7 @@ import './PageButton.scss';
 function PageButton(props) {
   const { handleClick, disabled, value } = props;
   return (
-    <button className="dark-text-button" onClick={handleClick} disabled={disabled}>
+    <button className="page-button" onClick={handleClick} disabled={disabled}>
       {value}
     </button>
   );
@@ -14,7 +14,7 @@ function PageButton(props) {
 PageButton.propTypes = {
   handleClick: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 
 export default PageButton;

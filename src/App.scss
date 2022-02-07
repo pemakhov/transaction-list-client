@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital@0;1&display=swap');
 
-html, body, #root {
+$mediumScreenWidth: 1024px;
+
+html,
+body,
+#root {
   height: 100%;
 }
 
@@ -19,6 +23,16 @@ footer {
   flex-shrink: 0;
 }
 
-main, header, footer {
-  padding: 0 10%;
+main,
+header,
+footer {
+  padding: 0 5px;
+}
+
+@media only screen and (min-width: $mediumScreenWidth) {
+  main,
+  header,
+  footer {
+    padding: 0 10%;
+  }
 }
