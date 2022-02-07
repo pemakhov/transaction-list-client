@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchTransactionsByFilter } from '../transactionsSlice';
-import { FILTERS, TRANSACTIONS_PER_PAGE } from '../../../constants/transactions';
+import { useDispatch } from 'react-redux';
+import { setFilter, setValue } from '../transactionsSlice';
+import { FILTERS } from '../../../constants/transactions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import './FilterBlock.scss';
 
 function FilterBlock() {
   const dispatch = useDispatch();
-  const { page } = useSelector((state) => state.transactions);
 
   const [userInput, setUserInput] = useState('');
   const [selected, setSelected] = useState(FILTERS.blockNumber);
@@ -25,7 +24,9 @@ function FilterBlock() {
     if (!userInput) {
       return;
     }
-    dispatch(fetchTransactionsByFilter({ filter: selected, value: userInput, limit: TRANSACTIONS_PER_PAGE, page }));
+    const value = userInput === '-' ? '' : userInput;
+    dispatch(setValue(value));
+    dispatch(setFilter(selected));
     setUserInput('');
   };
 

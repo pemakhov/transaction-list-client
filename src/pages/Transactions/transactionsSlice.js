@@ -1,34 +1,29 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { IDLE, PENDING } from '../../constants/loadingStates';
-import { fetchRecentTransactionsURL, filteredURLBase } from '../../constants/urls';
+import { fetchAllURL, fetchFilteredURL } from '../../constants/urls';
+import { FILTERS } from '../../constants/transactions';
 
-export const fetchRecentTransactions = createAsyncThunk('transactions/fetchLast', async () => {
+const getAllTransactionsURL = (base, limit, page) => `${base}?limit=${limit}&page=${page}`;
+
+const getTransactionsURL = (base, filter, value, limit, page) =>
+  `${base}?filter=${filter}&value=${value}&limit=${limit}&page=${page}`;
+
+export const fetchTransactions = createAsyncThunk('transactions/fetchTransactions', async (query) => {
   try {
-    const response = await axios.get(fetchRecentTransactionsURL);
-    const transactions = response && response?.data;
-    return transactions || [];
+    const { filter, value, limit, page } = query;
+
+    const url = value
+      ? getTransactionsURL(fetchFilteredURL, filter, value, limit, page)
+      : getAllTransactionsURL(fetchAllURL, limit, page);
+    console.log({ url });
+    const response = await axios.get(url);
+    const data = response && response?.data;
+    return data || { transactions: [], pages: 0 };
   } catch (e) {
     console.error(e.message);
   }
 });
-
-const getFilteredTransactionsURL = (base, filter, value, limit, page) =>
-  `${base}?filter=${filter}&value=${value}&limit=${limit}&page=${page}`;
-
-export const fetchTransactionsByFilter = createAsyncThunk(
-  'transactions/fetchFiltered',
-  async ({ filter, value, limit, page }) => {
-    try {
-      const url = getFilteredTransactionsURL(filteredURLBase, filter, value, limit, page);
-      const response = await axios.get(url);
-      const data = response && response?.data;
-      return data || { transactions: [], pages: 0 };
-    } catch (e) {
-      console.error(e.message);
-    }
-  }
-);
 
 export const transactionsSlice = createSlice({
   name: 'transactions',
@@ -37,6 +32,8 @@ export const transactionsSlice = createSlice({
     page: 0,
     pages: 1,
     loading: IDLE,
+    filter: FILTERS.blockNumber,
+    value: '',
   },
   reducers: {
     setTransactions: (state, action) => ({ ...state, transactions: action.payload }),
@@ -58,19 +55,20 @@ export const transactionsSlice = createSlice({
       const { page } = state;
       return page < 0 ? { ...state, page: 0 } : { ...state, page: page - 1 };
     },
+    setFilter: (state, action) => {
+      const newFilter = action.payload;
+      return newFilter === state.filter ? { ...state } : { ...state, page: 0, filter: newFilter };
+    },
+    setValue: (state, action) => {
+      const newValue = action.payload;
+      return newValue === state.value ? { ...state } : { ...state, value: newValue };
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchRecentTransactions.pending, (state) => ({ ...state, loading: PENDING }));
-    builder.addCase(fetchRecentTransactions.fulfilled, (state, action) => {
+    builder.addCase(fetchTransactions.pending, (state) => ({ ...state, loading: PENDING }));
+    builder.addCase(fetchTransactions.fulfilled, (state, action) => {
       try {
-        return { ...state, loading: IDLE, transactions: action.payload };
-      } catch (e) {
-        console.error(e.message);
-      }
-    });
-    builder.addCase(fetchTransactionsByFilter.pending, (state) => ({ ...state, loading: PENDING }));
-    builder.addCase(fetchTransactionsByFilter.fulfilled, (state, action) => {
-      try {
+        console.log('payload', action.payload);
         const { transactions, pages } = action.payload;
         return { ...state, loading: IDLE, transactions, pages };
       } catch (e) {
@@ -80,7 +78,7 @@ export const transactionsSlice = createSlice({
   },
 });
 
-export const { setTransactions, setPage, setPages, incrementPage, decrementPage } =
+export const { setTransactions, setPage, setPages, incrementPage, decrementPage, setFilter, setValue } =
   transactionsSlice.actions;
 
 export default transactionsSlice.reducer;
