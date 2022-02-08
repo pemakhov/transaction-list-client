@@ -2,6 +2,7 @@ $mediumScreenWidth: 1024px;
 
 .filter-block {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   margin-bottom: 5px;
@@ -10,7 +11,6 @@ $mediumScreenWidth: 1024px;
     display: flex;
     align-items: center;
     width: 381px;
-    height: 48px;
     border: 1px solid #f1f1f1;
     border-radius: 10px;
     margin-right: 12px;
@@ -21,6 +21,7 @@ $mediumScreenWidth: 1024px;
     border: none;
     outline: none;
     width: 237px;
+    height: 48px;
     height: 32px;
     border-radius: 10px 0 0 10px;
     border-right: 1px solid #f1f1f1;
@@ -53,6 +54,7 @@ $mediumScreenWidth: 1024px;
 
 @media only screen and (min-width: $mediumScreenWidth) {
   .filter-block {
+    flex-wrap: nowrap;
     justify-content: flex-start;
     margin-bottom: 16px;
   }

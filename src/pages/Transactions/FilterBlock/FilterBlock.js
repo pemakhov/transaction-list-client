@@ -24,7 +24,7 @@ function FilterBlock() {
     if (!userInput) {
       return;
     }
-    const value = userInput === '-' ? '' : userInput;
+    const value = userInput === '-' ? '' : String(userInput).trim();
     dispatch(setValue(value));
     dispatch(setFilter(selected));
     setUserInput('');

@@ -8,6 +8,7 @@ $mediumScreenWidth: 1024px;
 
   .wrapper {
     display: flex;
+    flex-wrap: wrap;
   }
 
   .pagination-divider {

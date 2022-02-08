@@ -6,11 +6,6 @@ $mediumScreenWidth: 1024px;
   width: 100%;
   margin-bottom: 10px;
 
-  a,
-  a:visited {
-    color: #3a80ba;
-  }
-
   .thead,
   .row {
     display: grid;
@@ -62,6 +57,20 @@ $mediumScreenWidth: 1024px;
         overflow: hidden;
         text-overflow: ellipsis;
         color: #1a1a1a;
+
+        a,
+        a:visited {
+          color: #3a80ba;
+        }
+      }
+
+      p.loading {
+        color: #afafaf;
+
+        a,
+        a:visited {
+          color: #8ea7bd;
+        }
       }
     }
   }
