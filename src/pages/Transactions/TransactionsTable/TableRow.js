@@ -10,34 +10,35 @@ function TableRow({ data }) {
   const { _id, from, to, blockNumber, confirmations, date, value, fee } = data;
   const url = getEtherscanTransactionURL(_id);
   const freeze = useSelector((state) => state.transactions.loading) === loading.PENDING;
+  const tableClassName = freeze ? 'row loading' : 'row';
 
   return (
-    <div className="row">
+    <div className={tableClassName}>
       <div className="cell">
-        <p className={freeze && 'loading'}>{parseIntFromHexString(blockNumber)}</p>
+        <p>{parseIntFromHexString(blockNumber)}</p>
       </div>
       <div className="cell">
-        <p className={freeze && 'loading'}>
+        <p>
           <a href={url}>{_id}</a>
         </p>
       </div>
       <div className="cell">
-        <p className={freeze && 'loading'}>{from}</p>
+        <p>{from}</p>
       </div>
       <div className="cell">
-        <p className={freeze && 'loading'}>{to}</p>
+        <p>{to}</p>
       </div>
       <div className="cell">
-        <p className={freeze && 'loading'}>{confirmations}</p>
+        <p>{confirmations}</p>
       </div>
       <div className="cell">
-        <p className={freeze && 'loading'}>{getFormattedDate(date)}</p>
+        <p>{getFormattedDate(date)}</p>
       </div>
       <div className="cell">
-        <p className={freeze && 'loading'}>{ethers.utils.formatEther(value)}</p>
+        <p>{ethers.utils.formatEther(value)}</p>
       </div>
       <div className="cell">
-        <p className={freeze && 'loading'}>{ethers.utils.formatEther(fee)}</p>
+        <p>{ethers.utils.formatEther(fee)}</p>
       </div>
     </div>
   );

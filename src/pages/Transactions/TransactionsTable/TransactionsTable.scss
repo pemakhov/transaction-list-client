@@ -63,15 +63,15 @@ $mediumScreenWidth: 1024px;
           color: #3a80ba;
         }
       }
+    }
+  }
 
-      p.loading {
-        color: #afafaf;
+  .row.loading .cell p {
+    color: #afafaf;
 
-        a,
-        a:visited {
-          color: #8ea7bd;
-        }
-      }
+    a,
+    a:visited {
+      color: #8ea7bd;
     }
   }
 

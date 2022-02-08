@@ -60,7 +60,7 @@ export const transactionsSlice = createSlice({
     },
     setValue: (state, action) => {
       const newValue = action.payload;
-      return newValue === state.value ? { ...state } : { ...state, value: newValue };
+      return newValue === state.value ? { ...state } : { ...state, value: newValue, page: 0 };
     },
   },
   extraReducers: (builder) => {
