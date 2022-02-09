@@ -4,6 +4,7 @@ import { setFilter, setValue } from '../transactionsSlice';
 import { FILTERS } from '../../../constants/transactions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { toHexString } from '../service';
 import './FilterBlock.scss';
 
 function FilterBlock() {
@@ -24,7 +25,17 @@ function FilterBlock() {
     if (!userInput) {
       return;
     }
-    const value = userInput === '-' ? '' : String(userInput).trim();
+
+    let value = userInput.trim();
+
+    if (value === '-') {
+      value = '';
+    } else if (selected === FILTERS.blockNumber) {
+      value = toHexString(value);
+    }
+
+    console.log({ value, selected });
+
     dispatch(setValue(value));
     dispatch(setFilter(selected));
     setUserInput('');
