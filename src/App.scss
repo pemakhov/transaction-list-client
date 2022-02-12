@@ -27,6 +27,7 @@ main,
 header,
 footer {
   padding: 0 5px;
+  min-width: 450px;
 }
 
 @media only screen and (min-width: $mediumScreenWidth) {

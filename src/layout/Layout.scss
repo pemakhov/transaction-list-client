@@ -7,6 +7,7 @@ $mediumScreenWidth: 1024px;
 
 header {
   display: flex;
+  justify-content: center;
   align-items: center;
   background: #3a80ba;
   margin-bottom: 10px;
@@ -38,6 +39,7 @@ footer {
 
 @media only screen and (min-width: $mediumScreenWidth) {
   header {
+    justify-content: flex-start;
     margin-bottom: 60px;
   }
   footer {
